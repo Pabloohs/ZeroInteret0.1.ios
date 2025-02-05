@@ -322,7 +322,7 @@ struct TransferView: View {
 
                 let keyData = generateAESKey(from: "CoucouNFC1234567890ABCDEF12345678")
 
-                // ✅ Maintenant on peut afficher la taille
+                // ✅ Maintenant on peut afficher la taille vincent
                 print("✅ Taille de la clé AES : \(keyData.count) octets")
                 print("✅ Clé de chiffrement générée : \(keyData.base64EncodedString())")
 
