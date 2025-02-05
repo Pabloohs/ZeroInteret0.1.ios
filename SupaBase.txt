@@ -1,0 +1,101 @@
+create table public.profiles (
+  id uuid not null,
+  first_name text null,
+  last_name text null,
+  created_at timestamp with time zone null default CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone null default CURRENT_TIMESTAMP,
+  email text null,
+  constraint users_pkey primary key (id),
+  constraint users_id_fkey foreign KEY (id) references auth.users (id)
+) TABLESPACE pg_default;
+
+create trigger update_users_modtime BEFORE
+update on profiles for EACH row
+execute FUNCTION update_modified_column ();
+
+create trigger trigger_create_accout
+after INSERT on profiles for EACH row
+execute FUNCTION create_account ();
+
+create table public.nfc_cards (
+  id uuid not null default extensions.uuid_generate_v4 (),
+  uid text not null default lpad(
+    (
+      (
+        floor(
+          (
+            random() * ('10000000000000000'::bigint)::double precision
+          )
+        )
+      )::bigint
+    )::text,
+    16,
+    '0'::text
+  ),
+  user_id uuid null,
+  is_active boolean null default false,
+  created_at timestamp with time zone null default CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone null default CURRENT_TIMESTAMP,
+  card_name text null,
+  constraint nfc_cards_pkey primary key (id),
+  constraint nfc_cards_card_name_key unique (card_name),
+  constraint nfc_cards_uid_key unique (uid),
+  constraint nfc_cards_user_id_fkey foreign KEY (user_id) references profiles (id) on delete CASCADE
+) TABLESPACE pg_default;
+
+create index IF not exists idx_nfc_cards_uid on public.nfc_cards using btree (uid) TABLESPACE pg_default;
+
+create trigger update_nfc_cards_modtime BEFORE
+update on nfc_cards for EACH row
+execute FUNCTION update_modified_column ();
+
+create trigger trigger_check_nfc_account BEFORE INSERT
+or
+update on nfc_cards for EACH row
+execute FUNCTION enforce_account_ownership ();
+
+create table public.accounts (
+  id uuid not null default extensions.uuid_generate_v4 (),
+  user_id uuid null,
+  account_number text not null,
+  balance numeric(15, 2) null default 0.00,
+  currency text null default 'EUR'::text,
+  created_at timestamp with time zone null default CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone null default CURRENT_TIMESTAMP,
+  constraint accounts_pkey primary key (id),
+  constraint accounts_account_number_key unique (account_number),
+  constraint accounts_user_id_fkey foreign KEY (user_id) references profiles (id) on delete CASCADE,
+  constraint accounts_balance_check check ((balance >= (0)::numeric))
+) TABLESPACE pg_default;
+
+create index IF not exists idx_accounts_user_id on public.accounts using btree (user_id) TABLESPACE pg_default;
+
+create trigger update_accounts_modtime BEFORE
+update on accounts for EACH row
+execute FUNCTION update_modified_column ();
+
+create table public.transactions (
+  id uuid not null default extensions.uuid_generate_v4 (),
+  from_account_id uuid null,
+  to_account_id uuid null,
+  amount numeric(15, 2) not null,
+  transaction_type text not null,
+  status text null default 'pending'::text,
+  created_at timestamp with time zone null default CURRENT_TIMESTAMP,
+  updated_at timestamp with time zone null default CURRENT_TIMESTAMP,
+  card_id uuid not null,
+  constraint transactions_pkey primary key (id),
+  constraint transactions_card_id_fkey foreign KEY (card_id) references nfc_cards (id),
+  constraint transactions_from_account_id_fkey foreign KEY (from_account_id) references accounts (id) on delete set null,
+  constraint transactions_to_account_id_fkey foreign KEY (to_account_id) references accounts (id) on delete set null,
+  constraint transactions_amount_check check ((amount > (0)::numeric)),
+  constraint transactions_no_self_transfer check ((from_account_id <> to_account_id))
+) TABLESPACE pg_default;
+
+create index IF not exists idx_transactions_from_account_id on public.transactions using btree (from_account_id) TABLESPACE pg_default;
+
+create index IF not exists idx_transactions_to_account_id on public.transactions using btree (to_account_id) TABLESPACE pg_default;
+
+create trigger update_transactions_modtime BEFORE
+update on transactions for EACH row
+execute FUNCTION update_modified_column ();
