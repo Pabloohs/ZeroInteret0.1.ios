@@ -1,0 +1,30 @@
+language: 
+  - ruby
+  - objective-c
+os: osx
+rvm: 
+  - 3.1.4 
+
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y build-essential clang
+
+  - gem install rubygems-update -v 3.3.22
+  - update_rubygems
+  - gem install ffi -v 1.17.1
+  
+  - gem install securerandom -v 0.3.2
+  - gem install cocoapods --no-document
+  - if [ ! -f Podfile ]; then pod init; fi
+
+  
+install:
+  - gem install xcpretty --no-document --quiet
+  - ls -la
+  - find . -name "*.xcworkspace"
+  - pod install --project-directory=./
+  
+script:
+  - set -o pipefail && xcodebuild test -workspace ./Signaturit.xcworkspace -scheme Signaturit-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
+  - pod lib lint --quick
+
