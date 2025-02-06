@@ -1,30 +1,50 @@
-language: 
-  - ruby
-  - objective-c
-os: osx
-rvm: 
-  - 3.1.4 
+# .travis.yml
 
+# Définir le langage et l'environnement
+language: swift
+os: osx  # Utiliser macOS pour les projets iOS
+osx_image: xcode14.3  # Spécifier la version de Xcode (ajuster selon vos besoins)
+
+# Branches à surveiller pour les builds
+branches:
+  only:
+    - main  # Remplacer par le nom de votre branche principale (ex: master, develop)
+
+# Configuration de l'environnement
+env:
+  global:
+    - LC_CTYPE=en_US.UTF-8
+    - LANG=en_US.UTF-8
+
+# Étapes avant l'installation
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y build-essential clang
+  # Mettre à jour Homebrew et installer les dépendances système
+  - brew update
+  - brew install cocoapods  # Installer CocoaPods via Homebrew
+  - brew upgrade cocoapods  # Mettre à jour CocoaPods si nécessaire
 
-  - gem install rubygems-update -v 3.3.22
-  - update_rubygems
-  - gem install ffi -v 1.17.1
-  
-  - gem install securerandom -v 0.3.2
-  - gem install cocoapods --no-document
+  # Initialiser CocoaPods si le fichier Podfile n'existe pas
   - if [ ! -f Podfile ]; then pod init; fi
 
-  
+# Installation des dépendances du projet
 install:
-  - gem install xcpretty --no-document --quiet
-  - ls -la
-  - find . -name "*.xcworkspace"
-  - pod install --project-directory=./
-  
-script:
-  - set -o pipefail && xcodebuild test -workspace ./Signaturit.xcworkspace -scheme Signaturit-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty -c
-  - pod lib lint --quick
+  - pod install --repo-update  # Installer les dépendances CocoaPods et mettre à jour les dépôts
 
+# Script de build et de test
+script:
+  # Construire et tester le projet avec xcodebuild
+  - set -o pipefail && xcodebuild test \
+      -workspace ./YourApp.xcworkspace \  # Remplacer par le nom de votre fichier .xcworkspace
+      -scheme YourAppScheme \  # Remplacer par le nom de votre schéma de build
+      -sdk iphonesimulator \  # Utiliser le SDK de l'iPhone Simulator
+      ONLY_ACTIVE_ARCH=NO \  # Activer toutes les architectures
+      | xcpretty -c  # Formater la sortie pour une meilleure lisibilité
+
+  # Linter le projet avec CocoaPods (optionnel)
+  - pod lib lint --quick  # Vérifier la validité du podspec (si applicable)
+
+# Cache pour accélérer les builds suivants
+cache:
+  cocoapods: true  # Mettre en cache les dépendances CocoaPods
+  directories:
+    - ~/Library/Developer/Xcode/DerivedData  # Mettre en cache les données dérivées de Xcode
