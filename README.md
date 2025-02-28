@@ -7,11 +7,11 @@
 
 *ZeroInteret0.1* permet aux utilisateurs 👥 de gérer leurs finances personnelles de manière dématérialisée. L'application offre :
 
-- 🔐 **Authentification sécurisée** : Connexion via e-mail ✉️ et mot de passe 🔑 avec Supabase.
-- 🏦 **Gestion de compte** : Suivi du solde et des informations du compte bancaire.
-- 📡 **Utilisation des cartes NFC** : Association et activation/désactivation de cartes NFC pour les paiements.
-- 📊 **Historique des transactions** : Consultation des paiements et virements effectués.
-- 💸 **Virements bancaires** : Envoi d’argent à d’autres utilisateurs avec validation via NFC.
+- **Authentification sécurisée** : Connexion via e-mail ✉️ et mot de passe 🔑 avec Supabase.
+- **Gestion de compte** : Suivi du solde et des informations du compte bancaire.
+- **Utilisation des cartes NFC** : Association et activation/désactivation de cartes NFC pour les paiements.
+- **Historique des transactions** : Consultation des paiements et virements effectués.
+- **Virements bancaires** : Envoi d’argent à d’autres utilisateurs avec validation via NFC.
 
 ## 3. 🏗️ Architecture de l'Application
 L'application est conçue autour de plusieurs modules interconnectés :
