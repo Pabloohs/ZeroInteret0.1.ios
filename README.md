@@ -22,7 +22,7 @@ L'application est conçue autour de plusieurs modules interconnectés :
 - La connexion et l’authentification 🔑 sont gérées via **Supabase** (`Supabase.swift`).
 
 ### b. 💳 Gestion des Comptes et Transactions
-- Chaque compte a un **solde et une devise** (`Account.swift`).
+- Chaque compte a un **solde** (`Account.swift`).
 - L’utilisateur peut consulter son historique de **transactions** (`Transaction.swift`).
 - Une transaction est liée à un **compte émetteur** et un **compte récepteur** (`UserTransaction.swift`).
 
