@@ -34,8 +34,7 @@ L'application est conçue autour de plusieurs modules interconnectés :
 ### d. 🎨 Expérience Utilisateur et Interface
 - **Écran de connexion** (`LoginView.swift`) permettant l’accès sécurisé 🔑 à l’application.
 - **Tableau de bord utilisateur** (`ProfileView.swift`) affichant les informations du compte et les cartes NFC associées.
-- **Interface de transactions** (`TransactionRow.swift`) mettant en forme les paiements et virements.
-- **Effets visuels améliorés** grâce à des animations et des flous (`VisualEffectBlur.swift`).
+- **Interface de transactions** (`TransactionRow.swift`) mettant en forme les paiements et virements via un algorithme de chiffrement niveau backend et déchiffrement au niveau de la BDD.
 
 ### e. 🔐 Mécanisme de Virement Sécurisé
 Le virement sécurisé dans *ZeroInteret0.1* repose sur un processus en plusieurs étapes garantissant la **confidentialité 🔏 et l'intégrité 🔍** des données.
