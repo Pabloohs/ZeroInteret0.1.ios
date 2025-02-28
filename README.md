@@ -43,7 +43,7 @@ Le virement sécurisé dans *ZeroInteret0.1* repose sur un processus en plusieur
 - Avant d’être envoyées au serveur, les informations du virement (comptes, montant, statut, carte NFC) sont **transformées en JSON**.
 - Ce JSON est **chiffré en AES-256-CBC 🔑** avec une clé dérivée via SHA-256.
 - Un **vecteur d’initialisation (IV)** est généré pour renforcer la sécurité 🛡️.
-- Les **données chiffrées 'CIPHERTEXT et l’IV'** sont envoyées au serveur.
+- Les **données chiffrées CIPHERTEXT & l’IV** sont envoyées au serveur.
 
 #### 2. 📥 Déchiffrement et Validation sur le Serveur
 - Une **fonction SQL dans Supabase** reçoit les données et utilise une **clé de déchiffrement** 🔑 pour retrouver les informations.
