@@ -1,4 +1,4 @@
-# ZeroInteret0.1 💳📱
+# ZeroInteret0.1
 
 ## 1. 🚀 Introduction
 *ZeroInteret0.1* est une solution bancaire numérique intégrant des fonctionnalités de gestion de comptes, de transactions et de cartes NFC. Ce document décrit son fonctionnement global et son architecture technique.
