@@ -16,28 +16,28 @@
 ## 3. 🏗️ Architecture de l'Application
 L'application est conçue autour de plusieurs modules interconnectés :
 
-### a. 👥 Gestion des Utilisateurs
-- Un utilisateur possède un **profil** `Profile.swift` contenant son identité 🆔 et son e-mail ✉️.
-- Il dispose d’un ou plusieurs **comptes bancaires** `Account.swift` associés à son identifiant.
-- La connexion et l’authentification 🔑 sont gérées via **Supabase** `Supabase.swift`.
+  ### a. 👥 Gestion des Utilisateurs
+  - Un utilisateur possède un **profil** `Profile.swift` contenant son identité 🆔 et son e-mail ✉️.
+  - Il dispose d’un ou plusieurs **comptes bancaires** `Account.swift` associés à son identifiant.
+  - La connexion et l’authentification 🔑 sont gérées via **Supabase** `Supabase.swift`.
 
-### b. 💳 Gestion des Comptes et Transactions
-- Chaque compte a un **solde** `Account.swift`.
-- L’utilisateur peut consulter son historique de **transactions** `Transaction.swift`.
-- Une transaction est liée à un **compte émetteur** et un **compte récepteur** `UserTransaction.swift`.
+  ### b. 💳 Gestion des Comptes et Transactions
+  - Chaque compte a un **solde** `Account.swift`.
+  - L’utilisateur peut consulter son historique de **transactions** `Transaction.swift`.
+  - Une transaction est liée à un **compte émetteur** et un **compte récepteur** `UserTransaction.swift`.
 
-### c. 📡 Interaction avec les Cartes NFC
-- L’utilisateur peut **enregistrer et gérer ses cartes NFC** `NFCCard.swift`.
-- L’état des cartes est affiché dans une **interface dédiée** `NFCCardView.swift`.
-- L’UID des cartes est **masqué** 🔒 pour des raisons de sécurité `String+Extensions.swift`.
+  ### c. 📡 Interaction avec les Cartes NFC
+  - L’utilisateur peut **enregistrer et gérer ses cartes NFC** `NFCCard.swift`.
+  - L’état des cartes est affiché dans une **interface dédiée** `NFCCardView.swift`.
+  - L’UID des cartes est **masqué** 🔒 pour des raisons de sécurité `String+Extensions.swift`.
 
-### d. 🎨 Expérience Utilisateur et Interface
-- **Écran de connexion** `LoginView.swift` permettant l’accès sécurisé 🔑 à l’application.
-- **Tableau de bord utilisateur** `ProfileView.swift` affichant les informations du compte et les cartes NFC associées.
-- **Interface de transactions** `TransactionRow.swift` mettant en forme les paiements et virements via un algorithme de chiffrement niveau backend et déchiffrement au niveau de la BDD.
+  ### d. 🎨 Expérience Utilisateur et Interface
+  - **Écran de connexion** `LoginView.swift` permettant l’accès sécurisé 🔑 à l’application.
+  - **Tableau de bord utilisateur** `ProfileView.swift` affichant les informations du compte et les cartes NFC associées.
+  - **Interface de transactions** `TransactionRow.swift` mettant en forme les paiements et virements via un algorithme de chiffrement niveau backend et déchiffrement au niveau de la BDD.
 
-### e. 🔐 Mécanisme de Virement Sécurisé
-Le virement sécurisé dans *ZeroInteret0.1* repose sur un processus en plusieurs étapes garantissant la **confidentialité 🔏 et l'intégrité 🔍** des données.
+  ### e. 🔐 Mécanisme de Virement Sécurisé
+  Le virement sécurisé dans *ZeroInteret0.1* repose sur un processus en plusieurs étapes garantissant la **confidentialité 🔏 et l'intégrité 🔍** des données.
 
 #### 1. 🔒 Chiffrement et Envoi des Données
 - Avant d’être envoyées au serveur, les informations du virement (comptes, montant, statut, carte NFC) sont **transformées en JSON**.
